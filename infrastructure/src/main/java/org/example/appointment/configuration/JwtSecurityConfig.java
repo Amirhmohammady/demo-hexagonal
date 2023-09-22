@@ -42,6 +42,8 @@ public class JwtSecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/", "/authenticate").permitAll()
                         //.anyRequest().hasAuthority(UserRoles.ROLE_USER)
+                        //we will use MethodSecurity
+                        .anyRequest().permitAll()
                         )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
