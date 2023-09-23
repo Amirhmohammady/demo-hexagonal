@@ -12,7 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 public class Appointment {
-    private Instant instant;
+    private Instant startTime;
     private Duration duration;
     private Long patientId;
     private Long doctorId;
