@@ -1,4 +1,4 @@
-package org.example.appointment.configuration;
+package org.example.appointment.web.securityconfig;
 
 import lombok.RequiredArgsConstructor;
 import org.example.appointment.web.filters.JwtTokenFilter;

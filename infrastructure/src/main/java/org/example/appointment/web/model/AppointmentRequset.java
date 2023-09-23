@@ -5,7 +5,7 @@ import java.time.Instant;
 
 public record AppointmentRequset(
         Long doctorId,
-        Instant instant,
+        Instant startTime,
         Duration duration
 ) {
 }

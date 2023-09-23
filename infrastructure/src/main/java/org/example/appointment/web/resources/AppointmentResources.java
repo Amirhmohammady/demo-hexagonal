@@ -1,7 +1,10 @@
 package org.example.appointment.web.resources;
 
+import lombok.RequiredArgsConstructor;
+import org.example.appointment.domain.appointment.port.api.AppointmentService;
 import org.example.appointment.web.model.Appointment;
 import org.example.appointment.web.model.AppointmentRequset;
+import org.example.appointment.web.securityconfig.AuthenticationFacade;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,10 @@ import java.util.List;
 
 @RequestMapping("/api/v1")
 @RestController
+@RequiredArgsConstructor
 public class AppointmentResources {
+    private AppointmentService appointmentService;
+    private AuthenticationFacade authenticationFacade;
 
     @GetMapping("/appointments")
     public List<Appointment> findAppointments(
@@ -26,6 +32,7 @@ public class AppointmentResources {
     public AppointmentRequset setAppointments(
             @RequestBody AppointmentRequset appointment
     ) {
+        appointmentService.createNewAppointment(appointment.doctorId(),authenticationFacade.getCurrentUser().getId(),appointment.startTime(),appointment.duration());
         return null;
     }
 }
