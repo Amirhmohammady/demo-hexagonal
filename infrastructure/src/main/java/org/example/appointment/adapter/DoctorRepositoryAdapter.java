@@ -10,16 +10,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class DoctorRepositoryAdapter implements DoctorRepositoryPort {
 
-    private final DoctorRepository repository;
+    private final DoctorRepository doctorRepository;
     private final DoctorEntityMapper mapper;
 
     public DoctorRepositoryAdapter(DoctorRepository repository, DoctorEntityMapper mapper) {
-        this.repository = repository;
+        this.doctorRepository = repository;
         this.mapper = mapper;
     }
 
     @Override
     public Doctor save(Doctor doctor) {
-        return With.value(doctor).map(mapper::map).perform(repository::save).map(mapper::map).orElse(null);
+        return With.value(doctor).map(mapper::map).perform(doctorRepository::save).map(mapper::map).orElse(null);
+    }
+
+    @Override
+    public Doctor findById(Long id) {
+        return mapper.map(doctorRepository.findById(id).orElse(null));
     }
 }

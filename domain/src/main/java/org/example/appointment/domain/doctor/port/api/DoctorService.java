@@ -5,5 +5,5 @@ import org.example.appointment.domain.doctor.model.Doctor;
 public interface DoctorService {
 
     Doctor create(Doctor doctor);
-
+    Doctor getById(Long doctorId);
 }

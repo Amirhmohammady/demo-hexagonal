@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class AppointmentResources {
-    private AppointmentService appointmentService;
-    private AuthenticationFacade authenticationFacade;
+    private final AppointmentService appointmentService;
+    private final AuthenticationFacade authenticationFacade;
 
     @GetMapping("/appointments")
     public List<Appointment> findAppointments(

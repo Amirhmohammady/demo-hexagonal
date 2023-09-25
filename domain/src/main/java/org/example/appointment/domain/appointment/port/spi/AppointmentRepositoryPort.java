@@ -2,10 +2,11 @@ package org.example.appointment.domain.appointment.port.spi;
 
 import org.example.appointment.domain.appointment.model.Appointment;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.List;
 
 public interface AppointmentRepositoryPort {
     Appointment save(Appointment doctor);
-    List<Appointment> getAllAppointment(LocalDate day);
+
+    List<Appointment> getAllAppointmentWithSameDay(Instant instant);
 }

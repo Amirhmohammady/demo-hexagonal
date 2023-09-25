@@ -8,9 +8,7 @@ import org.example.appointment.domain.appointment.service.exceptions.GetAppointm
 import org.example.appointment.domain.doctor.model.Doctor;
 import org.example.appointment.domain.patient.model.Patient;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,9 +22,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment createNewAppointment(Long doctorId, Long patientId, Instant startTime, Duration duration) {
+        //check duration
+        if (duration.toMinutes() < 1) throw new GetAppointmentException("duration can not be less than 1 minute");
+
+        DayOfWeek dayOfWeek = startTime.atZone(ZoneId.systemDefault()).getDayOfWeek();
+        if (dayOfWeek == DayOfWeek.THURSDAY || dayOfWeek == DayOfWeek.FRIDAY)
+            throw new GetAppointmentException("THURSDAY and FRIDAY are weekend");
         Instant endTime = startTime.plus(duration);
-        LocalDate currentDate = LocalDate.now();
-        List<Appointment> appointments = appointmentRepositoryPort.getAllAppointment(currentDate);
+        //LocalDate currentDate = LocalDate.ofInstant(startTime, ZoneId.systemDefault());
+        List<Appointment> appointments = appointmentRepositoryPort.getAllAppointmentWithSameDay(startTime);
         for (var a : appointments) {
             Instant startTime2 = a.getStartTime();
             Instant endTime2 = startTime2.plus(a.getDuration());

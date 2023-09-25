@@ -5,4 +5,5 @@ import org.example.appointment.domain.doctor.model.Doctor;
 public interface DoctorRepositoryPort {
 
     Doctor save(Doctor doctor);
+    Doctor findById(Long id);
 }
