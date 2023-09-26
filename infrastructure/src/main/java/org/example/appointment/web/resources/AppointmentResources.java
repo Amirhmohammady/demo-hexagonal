@@ -5,6 +5,7 @@ import org.example.appointment.domain.appointment.port.api.AppointmentService;
 import org.example.appointment.web.mapping.WebModelMapper;
 import org.example.appointment.web.model.Appointment;
 import org.example.appointment.web.model.AppointmentRequset;
+import org.example.appointment.web.model.EarlierAppointmentRequest;
 import org.example.appointment.web.securityconfig.AuthenticationFacade;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
@@ -32,4 +33,11 @@ public class AppointmentResources {
     public AppointmentRequset setAppointments(@RequestBody AppointmentRequset appointment) {
         return mapper.map(appointmentService.createNewAppointment(appointment.doctorId(), authenticationFacade.getCurrentUser().getId(), appointment.startTime(), appointment.duration()));
     }
+
+    @Secured({"ROLE_PATIENT"})
+    @PostMapping("/earlierappointments")
+    public AppointmentRequset setEarlierAppointments(@RequestBody EarlierAppointmentRequest appointmentRequest) {
+        return mapper.map(appointmentService.setEarlierAppointment(appointmentRequest.doctorId(), authenticationFacade.getCurrentUser().getId(), appointmentRequest.duration()));
+    }
+
 }
