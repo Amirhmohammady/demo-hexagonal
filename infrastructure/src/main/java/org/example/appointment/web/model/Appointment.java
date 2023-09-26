@@ -1,12 +1,12 @@
 package org.example.appointment.web.model;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public record Appointment(
         Doctor doctor,
         Patient patient,
-        Instant instant,
+        LocalDateTime instant,
         Duration duration
 ) {
 }

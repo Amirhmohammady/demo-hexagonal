@@ -6,7 +6,7 @@ import org.example.appointment.domain.appointment.model.Appointment;
 import org.example.appointment.domain.appointment.port.spi.AppointmentRepositoryPort;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +19,7 @@ public class AppointmentRepositoryAdapter implements AppointmentRepositoryPort {
     }
 
     @Override
-    public List<Appointment> getAllAppointmentWithSameDay(Instant instant) {
+    public List<Appointment> getAllAppointmentWithSameDay(LocalDateTime instant) {
         return null;
     }
 }

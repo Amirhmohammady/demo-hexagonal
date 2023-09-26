@@ -2,38 +2,45 @@ package org.example.appointment.data.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class AppointmentEntity {
 
     @Id
     private Long id;
 
-    private String name;
-
     private boolean expert;
 
-    public Long getId() {
-        return id;
-    }
+    private LocalDateTime startTime;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Duration duration;
 
-    public String getName() {
-        return name;
-    }
+    private Long doctorId;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private Long patientId;
 
-    public boolean isExpert() {
-        return expert;
-    }
-
-    public void setExpert(boolean expert) {
-        this.expert = expert;
+    @Override
+    public String toString() {
+        return "AppointmentEntity{" +
+                "id=" + id +
+                ", expert=" + expert +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", doctorId=" + doctorId +
+                ", patientId=" + patientId +
+                '}';
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfiguration {
     @Bean
-    public AppointmentService appointmentService(@Autowired AppointmentRepositoryPort appointmentRepositoryPort) {
-        return new AppointmentServiceImpl(appointmentRepositoryPort);
+    public AppointmentService appointmentService(@Autowired AppointmentRepositoryPort appointmentRepositoryPort, @Autowired DoctorRepositoryPort doctorRepositoryPort) {
+        return new AppointmentServiceImpl(appointmentRepositoryPort, doctorRepositoryPort);
     }
 
     @Bean
