@@ -1,6 +1,7 @@
 package org.example.appointment.configuration;
 
 import org.example.appointment.domain.appointment.port.api.AppointmentService;
+import org.example.appointment.domain.appointment.port.spi.AppointmentEventPublisherPort;
 import org.example.appointment.domain.appointment.port.spi.AppointmentRepositoryPort;
 import org.example.appointment.domain.appointment.service.AppointmentServiceImpl;
 import org.example.appointment.domain.doctor.port.api.DoctorService;
@@ -13,8 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfiguration {
     @Bean
-    public AppointmentService appointmentService(@Autowired AppointmentRepositoryPort appointmentRepositoryPort, @Autowired DoctorRepositoryPort doctorRepositoryPort) {
-        return new AppointmentServiceImpl(appointmentRepositoryPort, doctorRepositoryPort);
+    public AppointmentService appointmentService(
+            @Autowired AppointmentRepositoryPort appointmentRepositoryPort,
+            @Autowired DoctorRepositoryPort doctorRepositoryPort,
+            @Autowired AppointmentEventPublisherPort appointmentEventPublisherPort
+    ) {
+        return new AppointmentServiceImpl(appointmentRepositoryPort, doctorRepositoryPort, appointmentEventPublisherPort);
     }
 
     @Bean

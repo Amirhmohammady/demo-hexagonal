@@ -3,6 +3,8 @@ package org.example.appointment.domain.appointment.service;
 import lombok.RequiredArgsConstructor;
 import org.example.appointment.domain.appointment.model.Appointment;
 import org.example.appointment.domain.appointment.port.api.AppointmentService;
+import org.example.appointment.domain.appointment.port.event.CreateAppointmentEvent;
+import org.example.appointment.domain.appointment.port.spi.AppointmentEventPublisherPort;
 import org.example.appointment.domain.appointment.port.spi.AppointmentRepositoryPort;
 import org.example.appointment.domain.appointment.service.exceptions.GetAppointmentException;
 import org.example.appointment.domain.doctor.model.Doctor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepositoryPort appointmentRepositoryPort;
     private final DoctorRepositoryPort doctorRepositoryPort;
+    private final AppointmentEventPublisherPort eventPublisher;
 
     @Override
     public Appointment createNewAppointment(Doctor doctor, Patient patient, LocalDateTime startTime, Duration duration) {
@@ -51,6 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 throw new GetAppointmentException("The appointment time interferes from " + startTime2 + " to " + endTime2);
         }
         Appointment appointment = new Appointment(startTime, duration, patientId, doctorId);
+        eventPublisher.publishEvent(new CreateAppointmentEvent(appointment.getDoctorId(), appointment.getStartTime().toLocalDate()));
         return appointmentRepositoryPort.save(appointment);
     }
 
@@ -65,7 +69,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new GetAppointmentException("duration fo general doctor is 5 to 15 minute");
 
         LocalDateTime day = LocalDateTime.now();
-        for (int t1=0;t1<10;t1++){
+        for (int t1 = 0; t1 < 10; t1++) {
             List<Appointment> appointments = appointmentRepositoryPort.getAllAppointmentWithSameDay(day);
             LocalTime startTime = LocalTime.of(9, 0);
             LocalTime endTime;
@@ -73,8 +77,10 @@ public class AppointmentServiceImpl implements AppointmentService {
                 endTime = startTime.plus(duration);
                 LocalTime sTime = a.getStartTime().toLocalTime();
                 LocalTime eTime = sTime.plus(a.getDuration());
-                if (!((endTime.isAfter(sTime) && endTime.isBefore(eTime)) || (startTime.isBefore(sTime) && endTime.isAfter(eTime))))
+                if (!((endTime.isAfter(sTime) && endTime.isBefore(eTime)) || (startTime.isBefore(sTime) && endTime.isAfter(eTime)))) {
+                    eventPublisher.publishEvent(new CreateAppointmentEvent(doctorId, day.toLocalDate()));
                     return appointmentRepositoryPort.save(new Appointment(day, duration, patientId, doctorId));
+                }
                 if (eTime.plus(duration).isAfter(LocalTime.of(18, 0))) break;
                 startTime = eTime;
             }
@@ -82,7 +88,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             do {
                 day = day.plus(1, ChronoUnit.DAYS);
                 dayOfWeek = day.getDayOfWeek();
-            }while(dayOfWeek == DayOfWeek.THURSDAY || dayOfWeek == DayOfWeek.FRIDAY);
+            } while (dayOfWeek == DayOfWeek.THURSDAY || dayOfWeek == DayOfWeek.FRIDAY);
         }
         throw new GetAppointmentException("there is no free time in next 10 days to get appointment.");
     }
