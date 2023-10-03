@@ -1,5 +1,10 @@
 package org.example.appointment.domain.doctor.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class Doctor {
     private Long userId;
     private String name;
