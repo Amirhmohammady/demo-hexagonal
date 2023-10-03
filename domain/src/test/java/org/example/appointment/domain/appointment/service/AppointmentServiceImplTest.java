@@ -5,8 +5,7 @@ import org.example.appointment.domain.appointment.port.spi.AppointmentEventPubli
 import org.example.appointment.domain.appointment.port.spi.AppointmentRepositoryPort;
 import org.example.appointment.domain.doctor.model.Doctor;
 import org.example.appointment.domain.doctor.port.spi.DoctorRepositoryPort;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import java.time.Duration;
@@ -15,6 +14,14 @@ import java.util.ArrayList;
 
 class AppointmentServiceImplTest {
 
+    @BeforeEach
+    void setUp(){
+
+    }
+    @AfterEach
+    void tearDown(){
+
+    }
     @Test
     void givenEmptyDoctor_whenGettingAppointment_thenAppointmentShouldSet() {
         // arrange

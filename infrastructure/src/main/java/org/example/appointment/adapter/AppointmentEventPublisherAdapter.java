@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AppointmentEventPublisherAdapter implements AppointmentEventPublisherPort {
-    private ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void publishEvent(CreateAppointmentEvent event) {
